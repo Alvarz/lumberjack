@@ -1,4 +1,4 @@
-## Node Typescript starter
+## Lumberjack framework
 
 ### Development
 

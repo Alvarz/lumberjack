@@ -1,5 +1,5 @@
 {
-  "name": "@beardedframework/orm",
+  "name": "@beardedframework/lumberjack",
   "version": "0.0.1",
   "description": "a ORM for bearded",
   "main": "index.js",
@@ -43,9 +43,9 @@
   },
  "repository": {
     "type": "git",
-    "url": "git+https://github.com/BeardedFramework/orm"
+    "url": "git+https://github.com/BeardedFramework/lumberjack"
   },
   "bugs": {
-    "url": "https://github.com/BeardedFramework/orm/issues"
+    "url": "https://github.com/BeardedFramework/lumberjack/issues"
   }
 }
