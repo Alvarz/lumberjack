@@ -109,8 +109,6 @@ export default class config{
    * */
   private postgresInstance(){
 
-    console.log(this.username, this.password, this.port, this.database);
-
     //let instance = postgres(`postgres://${this.username}:${this.password}@host:${this.port}/${this.database}`);
     let instance = [];
 
