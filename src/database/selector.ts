@@ -19,38 +19,30 @@ export default class selector{
 
 
   /*
-   * execute and generate the model/collection instance
+   * save or update the model
    *
    * @param string query
-   * @param Object model
    *
    * @return Promise
-   *
    * */
   public async saveOrUpdate(query) : Promise<any> {
-
-    console.log(query)
 
     return new Promise(async(resolve, reject) =>{
     
       let response = await this.mysqlQuery(query);
       
       resolve(response)
-
     });
-
   }
 
   /*
-   * execute and generate the model/collection instance
+   * free statement to the database
    *
    * @param string query
-   * @param Object model
    *
    * @return Promise
-   *
    * */
-  public async freeStatement(query : string) {
+  public async freeStatement(query : string) : Promise<any> {
   
     let self = this;
     return new Promise(async(resolve, reject) => {
@@ -61,7 +53,6 @@ export default class selector{
   
   }
 
-
   /*
    * execute and generate the model/collection instance
    *
@@ -69,9 +60,8 @@ export default class selector{
    * @param Object model
    *
    * @return Promise
-   *
    * */
-  public async statement (query: string, model : object){
+  public async statement (query: string, model : object) : Promise<any> {
 
     let self = this;
     return new Promise(async(resolve, reject) => {
@@ -83,26 +73,23 @@ export default class selector{
     });
 
   }
+
   /*
-   * execute the query
+   * select the proper statement
    *
    * @param string query
    *
    * @return Promise
-   *
    * */
-  public async statementSelector  (query: string){
+  public async statementSelector  (query: string) : Promise<any> {
 
     switch(this.dbEngine){
       case 'mysql':
         return this.mysqlQuery(query);
-        break;
       case 'postgres':
         return this.mysqlQuery(query);
-        break;
       default:
         return this.mysqlQuery(query);
-
     }
   }
 
@@ -112,9 +99,8 @@ export default class selector{
    * @param string queryString
    *
    * @return Promise
-   *
    * */
-  private postgresQuery  (queryString : string){
+  private postgresQuery  (queryString : string) : Promise<any> {
 
     const self = this;
 
@@ -138,18 +124,13 @@ export default class selector{
    * @param string queryString
    *
    * @return Promise
-   *
    * */
-  private mysqlQuery  (queryString : string) {
+  private mysqlQuery  (queryString : string) : Promise<any> {
 
     let self = this;
 
     return new Promise(function(resolve, reject){
     
-      //let response = await this.db.any(query);
-      //
-      //self.db.connect();
-
       self.db.query(queryString, function(err, rows, fields){
 
         if(err){
@@ -159,26 +140,22 @@ export default class selector{
         }
         resolve(rows);
       });
-
-      //self.db.end();
     });
   }
 
   /*
-   * query to the mysql database
+   * generate a collection if it is needed
    *
-   * @param string queryString
+   * @param object data
+   * @param models/model model
    *
    * @return Promise
-   *
    * */
-  private generateCollectionIfNeeded(data, model : any){
+  private generateCollectionIfNeeded(data, model : any) {
 
     if(data.length > 2)
       return new CollectionService(data, model);
-
+    
     return model.create(data[0]);
-  
   }
-
 }

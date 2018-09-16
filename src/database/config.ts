@@ -8,6 +8,11 @@ export default class config{
 
   private static _instance;
 
+  /*
+   *
+   * @return instance
+   *
+   * */
   public static get Instance(){
 
     return this._instance || (this._instance = new this());
@@ -21,10 +26,25 @@ export default class config{
   private database : string;
   private port : string
   private _db:object = {};
-  
+
+  private configuration ;
+
+  /*
+   * get the database instance
+   *
+   * @return object
+   * */
   get db():object {
     return this._db;
   }
+
+  /*
+   * set the database instance
+   *
+   * @set object
+   *
+   * @return void
+   * */
   set db(theDB:object) {
     this._db = theDB;
   }
@@ -43,35 +63,33 @@ export default class config{
     this.database = process.env.DB_DATABASE;
     this.port = process.env.DB_PORT;
     this.db = this.selectDatabase(process.env.DB_CONNECTION);
-
   }
+
   /*
    *
-   * used to mount the routes
+   * select the database instance
    *
-   * @return string
+   * @param string selected
    *
+   * @return databaseInstance
    * */
-  private selectDatabase (selected : String){
+  private selectDatabase (selected : string){
 
     switch(selected){
 
       case 'postgres':
         return this.postgresInstance();
-        break;
       case 'mysql':
         return this.mysqlInstance();
-        break;
       default:
     }
   }
 
   /*
    *
-   * used to mount the routes
+   * create mysql database instance
    *
-   * @return string
-   *
+   * @return databaseInstance
    * */
   private mysqlInstance(){
 
@@ -81,14 +99,13 @@ export default class config{
       password: this.password,
       database: this.database
     });
-
   }
 
   /*
    *
-   * used to mount the routes
+   * create postgresql database instance
    *
-   *
+   * @return databaseInstance
    * */
   private postgresInstance(){
 

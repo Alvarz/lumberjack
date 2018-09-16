@@ -52,7 +52,6 @@ export default class DB{
       return 'error'
     
     return modelInstance
-  
   }
 
   /*
@@ -80,37 +79,6 @@ export default class DB{
   
     //return this.selector.statement('select count(id) from users');
     //return this.selector.saveOrUpdate(query);
-  }
-
-  /*
-   * execute the query
-   *
-   * @param string query
-   *
-   * @return Promise
-   *
-   * */
-  public async fetchAll  ( model : any) : Promise<any>{
-
-    let modelInstance = new model();
-    //console.log(model);
-    return this.selector.statement(`select * from ${modelInstance.table} `, model);
-  }
-
-  /*
-   * find row by id
-   *
-   * @param integer id 
-   * @param Object model
-   *
-   * @return Promise
-   *
-   * */
-  public async find (id : number, model : any) : Promise<any> {
-
-     let modelInstance = new model();
-     let fields = modelInstance.fillable.toString();
-    return this.selector.statement(`select * from ${modelInstance.table} where id=${id}`, model);
   }
 
   /*

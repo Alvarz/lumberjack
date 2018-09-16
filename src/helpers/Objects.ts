@@ -34,8 +34,12 @@ export default class Objects{
     let newObject = {}
     for (let key in objectToMap){
       let el = {}
-      el[key] = mapFn(objectToMap[key], key);
-      newObject = Object.assign(newObject,  el )
+      let resp = mapFn(objectToMap[key], key);
+
+      if(typeof resp !== 'undefined'){
+        el[key] = resp;
+        newObject = Object.assign(newObject,  el )
+      }
     }
 
     return newObject;
