@@ -46,7 +46,6 @@ export default class DatetimeService{
    * */
   public static formatter(momentInstance, format : string  = 'DD-MM-YYYY, h:mm:ss a' ) : string
   {
-    console.log(typeof moment);
 
     if(momentInstance instanceof moment)
       return momentInstance.format(format);
