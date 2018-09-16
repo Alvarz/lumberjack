@@ -64,28 +64,28 @@ export default class queryBuilder{
    * add where to builder
    *
    * @param String field
-   * @param String comparer
+   * @param String operator
    * @param any value
    *
    * @return queryBuilder instance
    * */
-  public where(field : string, comparer : string, value : any, model = null){
+  public where(field : string, operator : string, value : any, model = null){
 
-      return this.whereCompleter(field, comparer, value);
+      return this.whereCompleter(field, operator, value);
   }
 
   /*
    * add orWhere to builder
    *
    * @param String field
-   * @param String comparer
+   * @param String operator
    * @param any value
    *
    * @return queryBuilder instance
    * */
-  public orWhere(field : string, comparer : string, value : any){
+  public orWhere(field : string, operator : string, value : any){
 
-      return this.whereCompleter(field, comparer, value, 'OR');
+      return this.whereCompleter(field, operator, value, 'OR');
   }
 
   /*
@@ -93,13 +93,14 @@ export default class queryBuilder{
    *
    * @param String secondTable
    * @param String firstTableColumnName
+   * @param String operator
    * @param any secondTableColumnName
    *
    * @return queryBuilder instance
    * */
-  public join(secondTable, firstTableColumnName,  secondTableColumnName){
+  public join(secondTable : string, firstTableColumnName : any, operator : string,  secondTableColumnName : any ){
 
-    this.query.join += ` INNER JOIN ${secondTable} ON  ${firstTableColumnName} =  ${secondTableColumnName} `;
+    this.query.join += ` INNER JOIN ${secondTable} ON  ${firstTableColumnName} ${operator}  ${secondTableColumnName} `;
     return this;
   }
 
@@ -108,13 +109,14 @@ export default class queryBuilder{
    *
    * @param String secondTable
    * @param String firstTableColumnName
+   * @param String operator
    * @param any secondTableColumnName
    *
    * @return queryBuilder instance
    * */
-  public outerJoin(secondTable, firstTableColumnName,  secondTableColumnName){
+  public outerJoin(secondTable : string, firstTableColumnName : any, operator : string,  secondTableColumnName : any){
 
-    this.query.outerJoin += ` FULL OUTER JOIN ${secondTable} ON  ${firstTableColumnName} =  ${secondTableColumnName} `;
+    this.query.outerJoin += ` FULL OUTER JOIN ${secondTable} ON  ${firstTableColumnName} ${operator}  ${secondTableColumnName} `;
     return this;
   }
   /*
@@ -122,13 +124,14 @@ export default class queryBuilder{
    *
    * @param String secondTable
    * @param String firstTableColumnName
+   * @param String operator
    * @param any secondTableColumnName
    *
    * @return queryBuilder instance
    * */
-  public rightJoin(secondTable, firstTableColumnName,  secondTableColumnName){
+  public rightJoin(secondTable : string, firstTableColumnName : any, operator : string,  secondTableColumnName : any){
 
-    this.query.rightJoin += ` RIGHT JOIN ${secondTable} ON  ${firstTableColumnName} =  ${secondTableColumnName} `;
+    this.query.rightJoin += ` RIGHT JOIN ${secondTable} ON  ${firstTableColumnName} ${operator}  ${secondTableColumnName} `;
     return this;
   }
   /*
@@ -136,13 +139,14 @@ export default class queryBuilder{
    *
    * @param String secondTable
    * @param String firstTableColumnName
+   * @param String operator
    * @param any secondTableColumnName
    *
    * @return queryBuilder instance
    * */
-  public leftJoin(secondTable, firstTableColumnName,  secondTableColumnName){
+  public leftJoin(secondTable : string, firstTableColumnName : any, operator : string,  secondTableColumnName : any){
 
-    this.query.leftJoin += ` LEFT JOIN ${secondTable} ON  ${firstTableColumnName} =  ${secondTableColumnName} `;
+    this.query.leftJoin += ` LEFT JOIN ${secondTable} ON  ${firstTableColumnName} ${operator}  ${secondTableColumnName} `;
     return this;
   }
 
@@ -232,15 +236,15 @@ export default class queryBuilder{
    * add where to builder
    *
    * @param String field
-   * @param String comparer
+   * @param String operator
    * @param any value
    * @param string concater
    *
    * @return queryBuilder instance
    * */
-  private whereCompleter(field : string, comparer : string, value : string, concater = 'AND'){
+  private whereCompleter(field : string, operator : string, value : string, concater = 'AND'){
   
-    let where = ` ${field} ${comparer} '${value}'`;
+    let where = ` ${field} ${operator} '${value}'`;
 
     if(this.query.where == '')
       this.query.where += ` WHERE ${where}`;
