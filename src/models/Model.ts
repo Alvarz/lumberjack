@@ -1,8 +1,10 @@
 import db from '../database/db'
 import Objects from '../helpers/Objects'
+import queryBuilder from '../database/queryBuilder'
 import Logger from '@beardedframework/logger'
+import DatetimeService  from '../services/DatetimeService'
 
-export default class Model{
+export default class Model extends queryBuilder{
 
   public table : string = '';
 
@@ -13,7 +15,9 @@ export default class Model{
   public data : any;
 
   private fields : Array<string> = [];
-  
+
+  private DatetimeValues : Array<string> = ['created_at', 'updated_at', 'deleted_at', 'last_login'];
+
   //public static table : string = '';
 
   /*
@@ -23,14 +27,15 @@ export default class Model{
    * */
   constructor(data : any = {}){
 
+    super();
     this.data = data;
     this.columns()
   }
 
   /*
-   * parse to array
+   * Save a model instance on database
    *
-   * @return Array
+   * @return Promise
    *
    * */
   public async save() : Promise<any> {
@@ -48,12 +53,12 @@ export default class Model{
   }
 
   /*
-   * parse to array
+   * used to fill hidden values empty on new elements
    *
-   * @return Array
+   * @return void
    *
    * */
-  private fillHiddenValuesEmptyOnNewElement(){
+  private fillHiddenValuesEmptyOnNewElement() : void{
 
     console.log("FILL HIDDEN", this.fields);
     for(let valueAsKey of this.hidden){
@@ -69,18 +74,23 @@ export default class Model{
   }
 
   /*
-   * parse to array
+   * parse the model to json
    *
-   * @return Array
+   * @return json
    *
    * */
-  toJson(){
+  public toJson() : object{
 
     let self = this;
     let resp = Objects.map(this.data, function(value, key){
 
-      if(!Objects.inArray(self.hidden, key))
+      if(!Objects.inArray(self.hidden, key)){
+
+        if(self.DatetimeValues.indexOf(key) > -1)
+          return DatetimeService.formatter(value); 
+      
         return value;
+      }
     });
 
     return resp
@@ -91,13 +101,27 @@ export default class Model{
    * @return Array
    *
    * */
-  toArray(){
+  public toArray() : Array<any> {
 
     let resp = Objects.mapToArray(this.data, function(value, key){
+
       return value;
     });
 
     return resp
+  }
+
+  /*
+   * get the columns of the table
+   *
+   *
+   * @return void
+   *
+   * */
+  private async columns () : Promise<any>{
+
+    const cols = await db.Instance.columns(this);
+    this.fields = cols;
   }
 
   /*
@@ -116,20 +140,19 @@ export default class Model{
   /*
    * find a new instance of the model
    *
-   * @param Object data
+   * @param number id
    *
    * @return instance
    *
    * */
   public static async find (id : number) : Promise<any>{
 
-    return await db.Instance.find (id, this);
+    return Model.findRow(id, this);
+    // return await db.Instance.find (id, this);
   }
 
   /*
-   * fetch the data
-   *
-   * @param String data
+   * fetch the collection of models
    *
    *
    * @return Collection
@@ -137,22 +160,41 @@ export default class Model{
    * */
   public static async fetchAll () : Promise<any>{
 
-    return db.Instance.fetchAll (this);
+    return Model.fetchAllrows(this);
+    //return db.Instance.fetchAll (this);
   }
 
   /*
-   * fetch the data
+   * start a queryBuilder instance with select
    *
-   * @param String data
+   * @param array args
    *
-   *
-   * @return Collection
+   * @return queryBuilderInstance
    *
    * */
-  private async columns (){
+  public static select(...args){
+  
+    let qryBuilder = new queryBuilder();
+    qryBuilder.setModel(this);
+    return qryBuilder.select(args);
+  }
 
-    const cols = await db.Instance.columns(this);
-    this.fields = cols;
+  /*
+   * 
+   * start a queryBuilder instance with where
+   *
+   * @param String field
+   * @param String comparer
+   * @param any value
+   *
+   * @return queryBuilderInstance
+   *
+   * */
+  public static where(field : string, comparer : string, value : any){
+  
+    let qryBuilder = new queryBuilder();
+    qryBuilder.setModel(this);
+    return qryBuilder.where(field, comparer, value);
   }
 
 }
