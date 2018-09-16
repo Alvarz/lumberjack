@@ -8,7 +8,7 @@ config();
 exports.Model = Model;
 exports.DB = DB;
 
-class MainController{
+/*class MainController{
 
   public static async post () : Promise<any> {
   
@@ -73,8 +73,8 @@ const met = async function(){
 
   console.log(userResponse.toJson());
    
-};
+};*/
 
-met();
+////met();
 
 
