@@ -2,7 +2,7 @@
   "name": "@beardedframework/lumberjack",
   "version": "0.0.2",
   "description": "a ORM for bearded",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch & nodemon dist",
