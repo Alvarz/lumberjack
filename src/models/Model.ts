@@ -60,7 +60,6 @@ export default class Model extends queryBuilder{
    * */
   private fillHiddenValuesEmptyOnNewElement() : void{
 
-    console.log("FILL HIDDEN", this.fields);
     for(let valueAsKey of this.hidden){
 
       if(this.data.hasOwnProperty(valueAsKey))
@@ -69,7 +68,6 @@ export default class Model extends queryBuilder{
       let el = {}
       el[valueAsKey] = 'valueaskey';
       this.data = Object.assign(this.data, el);
-      console.log(valueAsKey)
     }
   }
 
