@@ -14,7 +14,7 @@ export {
   DB
 }
 
-class MainController{
+  /*class MainController{
 
   public static async post () : Promise<any> {
   
@@ -81,7 +81,7 @@ const met = async function(){
    
 };
 
-met();
+met();*/
 
 
 
