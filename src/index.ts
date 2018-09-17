@@ -5,8 +5,14 @@ import DB from './database/db'
 
 config();
 
-exports.Model = Model;
-exports.DB = DB;
+/**
+ * Export the modules  
+ * @return  {Object}
+ */
+export {
+  Model,
+  DB
+}
 
 class MainController{
 
@@ -76,5 +82,7 @@ const met = async function(){
 };
 
 met();
+
+
 
 
