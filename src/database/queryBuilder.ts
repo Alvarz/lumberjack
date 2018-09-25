@@ -30,17 +30,24 @@ export default class queryBuilder{
 
     this.query = {
       select: '',
+      ifSelect: '',
       table: '',
       where: '',
+      whereIn: '',
+      whereBetween: '',
       join: '',
       leftJoin: '',
       rightJoin: '',
       outerJoin: '',
+      caseSelect: '',
       groupBy: '',
       orderBy: '',
       limit: '',
       model: ''
     }
+
+    this.queryCaseWhens = '';
+    this.caseAs = ''
 
 
     this.paginator = {
@@ -79,12 +86,44 @@ export default class queryBuilder{
    * @param String field
    * @param String operator
    * @param any value
+   * @param model model
    *
    * @return queryBuilder instance
    * */
   public where(field : string, operator : string, value : any, model = null){
 
       return this.whereCompleter(field, operator, value);
+  }
+
+  /*
+   * add where IN to builder
+   *
+   * @param String field
+   * @param Array values
+   *
+   * @return queryBuilder instance
+   * */
+  public whereIn(field : string, values : Array<any>){
+
+    this.query.whereIn +=  ` WHERE ${field} IN (${values.toString()})`;
+
+     return this;
+  }
+
+  /*
+   * add between to builder
+   *
+   * @param String field
+   * @param String firstValue
+   * @param String secondValue
+   *
+   * @return queryBuilder instance
+   * */
+  public whereBetween(field : string, firstValue : string, secondValue : string){
+
+    this.query.whereBetween += ` WHERE ${field} BETWEEN  ${firstValue} AND ${secondValue} `
+
+    return this;
   }
 
   /*
@@ -99,6 +138,61 @@ export default class queryBuilder{
   public orWhere(field : string, operator : string, value : any){
 
       return this.whereCompleter(field, operator, value, 'OR');
+  }
+
+  /*
+   * generate case selects
+   *
+   * @param Sting indentifier
+   * @param function func
+   *
+   * @return queryBuilder instance
+   * */
+  public caseSelect(identifier : string,  func : function){
+
+    func(this);
+
+    this.query.caseSelect += `, CASE ${this.queryCaseWhens}  END as "${identifier}"`; 
+
+    this.queryCaseWhens = '';
+
+    return this;
+  }
+
+  /*
+   * query if to the builder
+   *
+   * @param String identifier
+   * @param String condition
+   * @param String valueIfTrue
+   * @param String valueIfFalse
+   *
+   * @return queryBuilder instance
+   * */
+  public ifSelect(identifier, condition, valueIfTrue, valueIfFalse ){
+
+    let queryIf = `, if(${condition}, "${valueIfTrue}", "${valueIfFalse}") as ${identifier}`;
+
+    this.query.ifSelect += queryIf;
+
+    return this;
+  }
+
+  /*
+   * add when to case select builder
+   *
+   * @param String firstArgument
+   * @param String operator
+   * @param String secondArgument
+   * @param String then
+   *
+   * @return queryBuilder instance
+   * */
+  public when(firstArgument : string, operator : any, secondArgument : string, then : string) {
+
+    this.queryCaseWhens += ` WHEN ${firstArgument} ${operator} ${secondArgument}  THEN "${then}" `;
+
+    return this;
   }
 
   /*
@@ -181,7 +275,7 @@ export default class queryBuilder{
   /*
    * add group by to builder
    *
-   * @param String order
+   * @param String field
    *
    * @return queryBuilder instance
    * */
@@ -218,9 +312,9 @@ export default class queryBuilder{
   /*
    * build the query string
    *
-   * @return Paginated data
+   * @return Promise
    * */
-  public async paginate(page, limit = null, links = null){
+  public async paginate(page, limit = null, links = null) : Promise<any>{
 
     var self = this;
 
@@ -263,15 +357,19 @@ export default class queryBuilder{
    * */
   private buildQryString() : string{
 
+    
     let qryObj = this.query;
 
     /*if(isToCount){
       qryObj.select = 'SELECT COUNT(id) '
     }*/
 
-    let query = 
-      ` ${qryObj.select} ${qryObj.table} ${qryObj.join} ${qryObj.leftJoin} ${qryObj.rightJoin} ${qryObj.outerJoin} ${qryObj.where} ${qryObj.groupBy} ${qryObj.orderBy} ${qryObj.limit};`
+    //   console.log(this.query);
 
+    let query = 
+      ` ${qryObj.select} ${qryObj.caseSelect} ${qryObj.ifSelect} ${qryObj.table} ${qryObj.join} ${qryObj.leftJoin} ${qryObj.rightJoin} ${qryObj.outerJoin} ${qryObj.where} ${qryObj.whereIn} ${qryObj.whereBetween} ${qryObj.groupBy} ${qryObj.orderBy} ${qryObj.limit};`
+
+    console.log(query);
     return query;
   }
 
@@ -292,13 +390,12 @@ export default class queryBuilder{
 
   /*
    *
-   * set the model to the builder
+   * generate the links of the paginator
    *
-   * @param model/model model
    *
-   * @return void
+   * @return object
    * */
-  private linkGenerator(){
+  private linkGenerator() : object{
   
     let self = this;
     let last = Math.ceil(self.paginator.total / self.paginator.limit);
@@ -328,23 +425,23 @@ export default class queryBuilder{
     }
 
     for(let i = linksPaginator.firstPaginated; i <= linksPaginator.endPaginated; i++){
-     linksPaginator.middleLinks.push('?page='+ i)
+      linksPaginator.middleLinks.push(`?page=${i}`)
     }
 
     if( linksPaginator.endPaginated < linksPaginator.lastPage){
-     linksPaginator.lastLink = '?page='+linksPaginator.lastPage
+      linksPaginator.lastLink = `?page=${linksPaginator.lastPage}`
     }
 
     if(linksPaginator.currentPage < linksPaginator.endPaginated){
       
-      linksPaginator.nextPage = linksPaginator.currentPage + 1; 
-      linksPaginator.nextLink = '?page=' + linksPaginator.nextPage; 
+      linksPaginator.nextPage = parseInt(linksPaginator.currentPage) + 1; 
+      linksPaginator.nextLink = `?page=${linksPaginator.nextPage}`; 
     }
 
     if(linksPaginator.currentPage > linksPaginator.firstPaginated){
       
-      linksPaginator.previousPage = linksPaginator.currentPage - 1; 
-      linksPaginator.previousLink = '?page=' + linksPaginator.previousPage; 
+      linksPaginator.previousPage = parseInt(linksPaginator.currentPage) - 1; 
+      linksPaginator.previousLink = `?page=${linksPaginator.previousPage}`; 
     }
 
     return linksPaginator;
