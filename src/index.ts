@@ -13,8 +13,8 @@ export {
   Model,
   DB
 }
-
-  /*  class MainController{
+  /*
+class MainController{
 
   public static async post () : Promise<any> {
   
@@ -98,8 +98,8 @@ const met = async function(){
   //console.log(userResponse.toJson());
   console.log(userResponse);
    
-};*/
+};
 
-//met();
-
+met();
+*/
 

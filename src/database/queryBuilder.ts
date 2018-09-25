@@ -23,6 +23,11 @@ export default class queryBuilder{
 
   /*
    *
+   * @var query cases when
+   * */
+  private queryCaseWhens;
+  /*
+   *
    * class construtor
    *
    * */
@@ -47,7 +52,6 @@ export default class queryBuilder{
     }
 
     this.queryCaseWhens = '';
-    this.caseAs = ''
 
 
     this.paginator = {
@@ -148,9 +152,9 @@ export default class queryBuilder{
    *
    * @return queryBuilder instance
    * */
-  public caseSelect(identifier : string,  func : function){
+  public caseSelect(identifier : string,  callable){
 
-    func(this);
+    callable(this);
 
     this.query.caseSelect += `, CASE ${this.queryCaseWhens}  END as "${identifier}"`; 
 
@@ -412,9 +416,9 @@ export default class queryBuilder{
       perPage: self.paginator.limit,
       middleLinks: [],
       entries: self.paginator.total,
-      nextPage: '',
+      nextPage: null,
       nextLink: '',
-      previousPage: '',
+      previousPage: null,
       previousLink: '',
       lastLink: '',
     
