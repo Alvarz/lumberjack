@@ -14,7 +14,7 @@ export {
   DB
 }
 
-  class MainController{
+  /*  class MainController{
 
   public static async post () : Promise<any> {
   
@@ -73,17 +73,33 @@ const met = async function(){
 
   let userResponse = await User.select('users.id', 'users.name', 'users.username')
   //let userResponse = await User.select('users.id', 'users.name', 'users.username', 'employees.name', 'employees.id as employee_id', 'employees.gender')
-  //.join('employees', 'employees.user_id', '=', 'users.id')
+  .join('employees', 'employees.user_id', '=', 'users.id')
   //.where('users.name', 'like', '%Lu%')
-    .orderBy('id')
+    .caseSelect('estado', function(caseQuery){
+
+      //console.log(caseQuery)
+      caseQuery.when('users.name', '=', '"Luis"', 'luises')
+      caseQuery.when('users.name', '!=', '"Luis"', 'no luises')
+    
+     })
+    .caseSelect('stut', function(caseQuery){
+
+      caseQuery.when('users.name', '=', '"Susana"', 'susanas')
+      caseQuery.when('users.name', '!=', '"Susana"', 'no susanas')
+    
+    })
+  .ifSelect('whois', 'users.name = "Sergio"', 'es sergio', 'no es sergio')
+  //.whereIn('users.id', [5,6,7,8,9, 10, 11])
+  //.whereBetween('users.id', 7, 11)
+    .orderBy('users.id')
   //.get();
-    .paginate(3);
+    .paginate(1);
 
   //console.log(userResponse.toJson());
   console.log(userResponse);
    
-};
+};*/
 
-met();
+//met();
 
 
