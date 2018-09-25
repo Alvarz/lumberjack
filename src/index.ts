@@ -14,7 +14,7 @@ export {
   DB
 }
 
-  /*class MainController{
+  class MainController{
 
   public static async post () : Promise<any> {
   
@@ -71,16 +71,19 @@ const met = async function(){
 
   //console.log(user.toJson());
 
-  let userResponse = await User.select('users.id', 'users.name', 'users.username', 'employees.name', 'employees.id as employee_id', 'employees.gender')
-    .join('employees', 'employees.user_id', 'users.id')
-    .where('users.name', 'like', '%Lu%')
+  let userResponse = await User.select('users.id', 'users.name', 'users.username')
+  //let userResponse = await User.select('users.id', 'users.name', 'users.username', 'employees.name', 'employees.id as employee_id', 'employees.gender')
+  //.join('employees', 'employees.user_id', '=', 'users.id')
+  //.where('users.name', 'like', '%Lu%')
     .orderBy('id')
-    .get();
+  //.get();
+    .paginate(3);
 
-  console.log(userResponse.toJson());
+  //console.log(userResponse.toJson());
+  console.log(userResponse);
    
 };
 
-met();*/
+met();
 
 

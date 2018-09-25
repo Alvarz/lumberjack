@@ -14,6 +14,11 @@ export default class queryBuilder{
    *
    * @var the selector instance
    * */
+  private paginator;
+  /*
+   *
+   * @var the selector instance
+   * */
   private selector;
 
   /*
@@ -35,6 +40,14 @@ export default class queryBuilder{
       orderBy: '',
       limit: '',
       model: ''
+    }
+
+
+    this.paginator = {
+      limit: 4,
+      query: '',
+      total: 0,
+      links: 2
     }
 
     this.selector = new selector();
@@ -205,11 +218,56 @@ export default class queryBuilder{
   /*
    * build the query string
    *
+   * @return Paginated data
+   * */
+  public async paginate(page, limit = null, links = null){
+
+    var self = this;
+
+    if(limit !== null)
+      self.paginator.limit = limit;
+
+    if(links !== null)
+      self.paginator.links = links;
+    
+    return new Promise( async function(resolve, reject){
+    
+      self.paginator.page = page; 
+      
+      let qry = self.buildQryString();
+      const resp = await self.selector.statement(qry, self.query.model);
+      self.paginator.total = Object.keys(resp.toJson()).length - 1;
+   
+      let offset = (self.paginator.page - 1) * self.paginator.limit;
+      self.query.limit = ` LIMIT ${offset}, ${self.paginator.limit}`
+      
+      self.paginator.query = self.buildQryString();
+
+      let response = await self.selector.statement(self.paginator.query, self.query.model);
+
+      const respFinal = {
+        paginator: self.linkGenerator(),
+        data: response.toJson()
+      }
+
+      resolve(respFinal);
+    
+    });
+
+  }
+
+  /*
+   * build the query string
+   *
    * @return string
    * */
   private buildQryString() : string{
 
     let qryObj = this.query;
+
+    /*if(isToCount){
+      qryObj.select = 'SELECT COUNT(id) '
+    }*/
 
     let query = 
       ` ${qryObj.select} ${qryObj.table} ${qryObj.join} ${qryObj.leftJoin} ${qryObj.rightJoin} ${qryObj.outerJoin} ${qryObj.where} ${qryObj.groupBy} ${qryObj.orderBy} ${qryObj.limit};`
@@ -230,6 +288,66 @@ export default class queryBuilder{
     const instance = new model();
     this.query.model = model;
     this.query.table = ` FROM ${instance.table} `;
+  }
+
+  /*
+   *
+   * set the model to the builder
+   *
+   * @param model/model model
+   *
+   * @return void
+   * */
+  private linkGenerator(){
+  
+    let self = this;
+    let last = Math.ceil(self.paginator.total / self.paginator.limit);
+    let page = parseInt(self.paginator.page);
+    let linksPaginator = {
+    
+      lastPage: last,
+      firstPage: 1,
+      currentPage:self.paginator.page,
+      currentLink: '?page=' +self.paginator.page,
+      firstPaginated: ((self.paginator.page - self.paginator.links) > 0) ? self.paginator.page - self.paginator.links : 1,
+      endPaginated: ((self.paginator.page + self.paginator.links) < last) ? self.paginator.page + self.paginator.links : last,
+      firstLink: '',
+      perPage: self.paginator.limit,
+      middleLinks: [],
+      entries: self.paginator.total,
+      nextPage: '',
+      nextLink: '',
+      previousPage: '',
+      previousLink: '',
+      lastLink: '',
+    
+    }
+
+    if(linksPaginator.firstPaginated > 1){
+      linksPaginator.firstLink = '?page=1'
+    }
+
+    for(let i = linksPaginator.firstPaginated; i <= linksPaginator.endPaginated; i++){
+     linksPaginator.middleLinks.push('?page='+ i)
+    }
+
+    if( linksPaginator.endPaginated < linksPaginator.lastPage){
+     linksPaginator.lastLink = '?page='+linksPaginator.lastPage
+    }
+
+    if(linksPaginator.currentPage < linksPaginator.endPaginated){
+      
+      linksPaginator.nextPage = linksPaginator.currentPage + 1; 
+      linksPaginator.nextLink = '?page=' + linksPaginator.nextPage; 
+    }
+
+    if(linksPaginator.currentPage > linksPaginator.firstPaginated){
+      
+      linksPaginator.previousPage = linksPaginator.currentPage - 1; 
+      linksPaginator.previousLink = '?page=' + linksPaginator.previousPage; 
+    }
+
+    return linksPaginator;
   }
 
   /*
