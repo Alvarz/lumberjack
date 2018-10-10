@@ -31,7 +31,7 @@ export default class queryBuilder{
    * class construtor
    *
    * */
-  constructor(){
+  constructor(tableName = null){
 
     this.query = {
       select: '',
@@ -60,6 +60,11 @@ export default class queryBuilder{
       total: 0,
       links: 2
     }
+
+    if(tableName !== null)
+      this.query.table = tableName;
+      
+    
 
     this.selector = new selector();
   }
@@ -298,7 +303,6 @@ export default class queryBuilder{
   public get(){
 
     let query = this.buildQryString();
-    //console.log(query);
     return this.selector.statement(query, this.query.model);
   }
 
@@ -310,6 +314,7 @@ export default class queryBuilder{
   public first(){
 
     this.query.limit = ' LIMIT 1';
+
     return this.get();
   }
 
@@ -472,6 +477,7 @@ export default class queryBuilder{
 
     return this;
   }
+
 
 
   /*

@@ -134,19 +134,22 @@ export default class Model extends queryBuilder{
    *
    * */
   private async hasManyToMany(
-    otherModel : Object<any>, pivotTable : string, otherPivot : string, myPivot : string, otherIndex : string = 'id', myIndex : string = 'id'){
+    otherModel : Object<any>, pivotTable : string, otherPivot : string, myPivot : string, otherIndex = 'id' : string, myIndex : string = 'id'){
     
-    //let builder = new queryBuilder(pivotTable)
+    
+    let builder = new queryBuilder(pivotTable)
 
-    let otherInstance = new otherModel(); 
-    let data = await otherModel.select(`${otherInstance.table}.*`)
-      .where(`${pivotTable}.${myPivot}`,'=', `${this.data[myIndex]}`)
-      .join(`${pivotTable}`, `${pivotTable}.${otherPivot}`,'=', `${otherInstance.table}.${otherIndex}`)
+    let response = await builder.select('*').where(`${pivotTable}.${otherPivot}`, `${this.table}.${otherIndex}`).get();
+
+    console.log(response);
+    /*
+    let instance = new otherModel(); 
+    let data = await otherModel.select('*')
+      .where(`${instance.table}.${otherIndex}`,'=', `${this.data[myIndex]}`)
       .get();
-
-      console.log(data);
-    //this.data[`${otherInstance.constructor.name.toLowerCase()}`] = data.toJson();
-    //return data;
+    //this.data.${name} = data.toArray();
+    this.data[`${instance.constructor.name.toLowerCase()}`] = data.toJson();
+    return data;*/
   
   }
 
