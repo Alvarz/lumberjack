@@ -15,7 +15,7 @@ export {
   DB
 }
   
-class MainController{
+  /*class MainController{
 
   public static async post () : Promise<any> {
   
@@ -125,7 +125,7 @@ const testHasManytoMany = async(){
 
   //await user.product();
 
-  //console.log(product.toJson());
+  console.log(product.toJson());
 
 }
 
@@ -144,4 +144,4 @@ const testBelongsTo = async(){
 //met();
 //testHasOne();
 //testBelongsTo();
-testHasManytoMany();
+testHasManytoMany();*/

@@ -153,7 +153,7 @@ export default class selector{
    * */
   private generateCollectionIfNeeded(data, model : any) {
 
-    if(data.length > 2)
+    if(data.length > 1)
       return new CollectionService(data, model);
     
     return model.create(data[0]);
