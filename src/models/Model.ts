@@ -133,8 +133,8 @@ export default class Model extends queryBuilder{
    * @return collection
    *
    * */
-  private async hasManyToMany(
-    otherModel : Object<any>, pivotTable : string, otherPivot : string, myPivot : string, otherIndex : string = 'id', myIndex : string = 'id'){
+  protected async hasManyToMany(
+    otherModel, pivotTable : string, otherPivot : string, myPivot : string, otherIndex : string = 'id', myIndex : string = 'id'){
     
     //let builder = new queryBuilder(pivotTable)
 
@@ -144,10 +144,8 @@ export default class Model extends queryBuilder{
       .join(`${pivotTable}`, `${pivotTable}.${otherPivot}`,'=', `${otherInstance.table}.${otherIndex}`)
       .get();
 
-      console.log(data);
-    //this.data[`${otherInstance.constructor.name.toLowerCase()}`] = data.toJson();
-    //return data;
-  
+    this.data[`${otherInstance.constructor.name.toLowerCase()}`] = data.toJson();
+    return data;
   }
 
   /*
@@ -160,7 +158,7 @@ export default class Model extends queryBuilder{
    * @return collection
    *
    * */
-  private async hasMany(otherModel : Object<any>, otherIndex : string, myIndex :string){
+  protected async hasMany(otherModel, otherIndex : string, myIndex :string){
   
   
     let instance = new otherModel();
@@ -183,7 +181,7 @@ export default class Model extends queryBuilder{
    * @return collection
    *
    * */
-  private async belongsToMany(otherModel : Object<any>, otherIndex : string, myIndex :string,){
+  protected async belongsToMany(otherModel, otherIndex : string, myIndex :string,){
   
     let instance = new otherModel();
     let data = await otherModel.select('*')
@@ -204,7 +202,7 @@ export default class Model extends queryBuilder{
    * @return collection
    *
    * */
-  private async belongsTo(otherModel : Object<any>, otherIndex : string, myIndex :string,){
+  protected async belongsTo(otherModel, otherIndex : string, myIndex :string,){
   
     let instance = new otherModel();
     let data = await otherModel.select('*')
@@ -226,7 +224,7 @@ export default class Model extends queryBuilder{
    * @return collection
    *
    * */
-  private async hasOne(otherModel : Object<any>, otherIndex : string, myIndex :string){
+  protected async hasOne(otherModel, otherIndex : string, myIndex :string){
   
   
     let instance = new otherModel();
