@@ -378,7 +378,7 @@ export default class queryBuilder{
     let query = 
       ` ${qryObj.select} ${qryObj.caseSelect} ${qryObj.ifSelect} ${qryObj.table} ${qryObj.join} ${qryObj.leftJoin} ${qryObj.rightJoin} ${qryObj.outerJoin} ${qryObj.where} ${qryObj.whereIn} ${qryObj.whereBetween} ${qryObj.groupBy} ${qryObj.orderBy} ${qryObj.limit};`
 
-    console.log(query);
+    //console.log(query);
     return query;
   }
 
