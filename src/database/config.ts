@@ -10,40 +10,61 @@ export default class config{
 
   /*
    *
-   * @return instance
+   * @return { config }
    *
    * */
-  public static get Instance(){
+  public static get Instance() : config {
 
     return this._instance || (this._instance = new this());
   }
 
   /* ####### / Singleton ########## */
-
+  
+  /*
+   * @var { string } db username
+   * */
   private username : string;
+  /*
+   * @var { string } db password
+   * */
   private password : string;
+  /*
+   * @var { string } db host
+   * */
   private host : string;
+  /*
+   * @var { string } db database name
+   * */
   private database : string;
+  /*
+   * @var { string } db database port
+   * */
   private port : string
+  /*
+   * @var { object } db 
+   * */
   private _db:object = {};
 
+  /*
+   * @var { string } db database port
+   * */
   private configuration ;
 
   /*
    * get the database instance
    *
-   * @return object
+   * @return { object }
    * */
-  get db():object {
+  get db() :object {
     return this._db;
   }
 
   /*
    * set the database instance
    *
-   * @set object
+   * @set { object }
    *
-   * @return void
+   * @return { void }
    * */
   set db(theDB:object) {
     this._db = theDB;
@@ -52,7 +73,7 @@ export default class config{
    *
    * used to mount the routes
    *
-   * @return void
+   * @return { void }
    *
    * */
   constructor(){
@@ -69,11 +90,11 @@ export default class config{
    *
    * select the database instance
    *
-   * @param string selected
+   * @param { string } selected
    *
-   * @return databaseInstance
+   * @return { databaseInstance }
    * */
-  private selectDatabase (selected : string){
+  private selectDatabase (selected : string) : any{
 
     switch(selected){
 
@@ -89,9 +110,9 @@ export default class config{
    *
    * create mysql database instance
    *
-   * @return databaseInstance
+   * @return { databaseInstance }
    * */
-  private mysqlInstance(){
+  private mysqlInstance() : any {
 
     return mysql.createConnection({
       host: this.host,
@@ -105,9 +126,9 @@ export default class config{
    *
    * create postgresql database instance
    *
-   * @return databaseInstance
+   * @return { databaseInstance }
    * */
-  private postgresInstance(){
+  private postgresInstance() : any {
 
     //let instance = postgres(`postgres://${this.username}:${this.password}@host:${this.port}/${this.database}`);
     let instance = [];

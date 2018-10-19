@@ -2,12 +2,9 @@
 export default class Objects{
   
   /*
-   *
    * map the object to array
    *
-   *
-   * retun array
-   *
+   * return { array }
    * */
   public static mapToArray(objectToMap : object, mapFn : Function) : Array<any> {
 
@@ -22,12 +19,9 @@ export default class Objects{
 
 
   /*
-   *
    * map the object to object
    *
-   *
-   * retun object
-   *
+   * return { object }
    * */
   public static map(objectToMap : object, mapFn : Function) : object {
 
@@ -46,11 +40,12 @@ export default class Objects{
   }
 
   /*
+   * return if element is in array
    *
-   * map the object to object
+   * @param { Array } arr
+   * @param { String } key
    *
-   *
-   * retun object
+   * retun { boolean }
    *
    * */
   public static inArray(arr : Array<any>, key : string) : boolean{

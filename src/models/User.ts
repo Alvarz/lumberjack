@@ -1,28 +1,28 @@
-import model from './Model';
-import Employee from './Employee';
-import Product from './Product';
+import Model from './Model';
 
 
-export default class User extends model{
-
+export default class User extends Model{
+  /*
+   * @var { string } database table name
+   */
   public table : string = 'users';
 
+  /*
+   * @var { array } the fillable elements
+   */
   public fillable : Array<string> = ['name', 'lastname'];
   
+  /*
+   * @var { array } the hidden elements
+   */
   public hidden : Array<string> = ['api_token', 'remember_token', 'password'];
-
+  /*
+   *
+   * constructor
+   *
+   * */
   constructor(data : any = {}){
-
     super(data);
   }
 
-  public async employee(){
-
-    return this.hasOne(Employee, 'user_id', 'id');  
-  } 
-
-  public async product(){
-
-    return this.hasMany(Product, 'created_by', 'id')
-  }
 }

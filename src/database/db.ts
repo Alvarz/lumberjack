@@ -8,15 +8,26 @@ export default class DB{
 
   private static _instance ;
 
-  public static get Instance() {
+  /*
+   *
+   * @return { DB }
+   */
+  public static get Instance() : DB {
 
     return this._instance || (this._instance = new this());
   }
 
   /* ####### / Singleton ########## */
 
+  /*
+   * @var selector
+   */
   private selector;
 
+  /*
+   * class constructor
+   *
+   */
   constructor(){
 
     this.selector = new selector();
@@ -24,11 +35,11 @@ export default class DB{
 
 
   /*
-   * execute the query
+   * update the model data
    *
-   * @param string query
+   * @param { mode/Model } modelInstance
    *
-   * @return Promise
+   * @return { Promise }
    *
    * */
   public async update(modelInstance) : Promise<any> {
@@ -45,7 +56,6 @@ export default class DB{
     }
 
     const query = `UPDATE  ${modelInstance.table} SET ${toUpdate} updated_at=CURRENT_TIMESTAMP() where id=${data.id}`
-
     const response = await this.selector.saveOrUpdate(query);
 
     if(response.changedRows < 1)
@@ -55,12 +65,11 @@ export default class DB{
   }
 
   /*
-   * execute the query
+   * create a new entry of model on database
    *
-   * @param string query
+   * @param { mode/Model } modelInstance
    *
-   * @return Promise
-   *
+   * @return { Promise }
    * */
   public async save(modelInstance) : Promise<any> {
 
@@ -82,12 +91,11 @@ export default class DB{
   }
 
   /*
-   * find row by id
+   * return the column names of the given table model
    *
-   * @param integer id 
-   * @param Object model
+   * @param { mode/Model } modelInstance
    *
-   * @return Promise
+   * @return { Promise }
    *
    * */
   public async columns(modelInstance : any) : Promise<any> {
@@ -104,5 +112,4 @@ export default class DB{
       resolve(fields)
     });
   }
-
 }

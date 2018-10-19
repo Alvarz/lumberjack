@@ -2,50 +2,47 @@ import * as moment from 'moment';
 
 export default class DatetimeService{
 
-
-
   /*
    *
-   * parse the moment instance to date string
+   * parse the any instance to date string
    *
-   * @param moment momentInstance
-   * @param string format
+   * @param { any } momentInstance
+   * @param { string } format
    *
-   * @return string
+   * @return { string }
    *
    * */
-  public static toDate(momentIntance, format : string = 'DD-DD-YYYY' ){
+  public static toDate(anyIntance : any, format : string = 'DD-DD-YYYY' ) : string {
 
-    return DatetimeService.formatter(momentIntance, format);
+    return DatetimeService.formatter(anyIntance, format);
   }
 
   /*
    *
-   * parse the moment instance to time string
+   * parse the any instance to time string
    *
-   * @param moment momentInstance
-   * @param string format
+   * @param { any } momentInstance
+   * @param { string } format
    *
-   * @return string
+   * @return { string }
    *
    * */
-  public static toTime(momentIntance, format : string = 'h:mm:ss a'){
+  public static toTime(anyIntance : any, format : string = 'h:mm:ss a') : string {
 
-    return DatetimeService.formatter(momentIntance, format);
+    return DatetimeService.formatter(anyIntance, format);
   }
 
   /*
    *
    * format the momentInstance
    *
-   * @param moment momentInstance
-   * @param string format
+   * @param { any } momentInstance
+   * @param { string } format
    *
-   * @return string
+   * @return { string }
    *
    * */
-  public static formatter(momentInstance, format : string  = 'DD-MM-YYYY, h:mm:ss a' ) : string
-  {
+  public static formatter(momentInstance : any, format : string  = 'DD-MM-YYYY, h:mm:ss a' ) : string {
 
     if(momentInstance instanceof moment)
       return momentInstance.format(format);
@@ -56,20 +53,17 @@ export default class DatetimeService{
 
   /*
    *
-   * create a new moment instance from string
+   * create a new any instance from string
    *
-   * @param string datetiem
-   * @param string format
+   * @param { string } datetiem
+   * @param { string } format
    *
-   * @return momentInstance
+   * @return { momentInstance }
    *
    * */
-  private static toMoment(datetime : string, format){
+  private static toMoment(datetime : string, format) : any {
 
     return  moment(datetime, format);
   }
-
-
-
 
 }

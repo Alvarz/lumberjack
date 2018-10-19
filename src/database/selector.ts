@@ -2,9 +2,15 @@ import  config from './config'
 import CollectionService from '../services/CollectionService'
 
 export default class selector{
+  
+  /*
+   * @var {string} the db engine to be used
+   */
+  private dbEngine : string;
 
-  private dbEngine;
-
+  /*
+   * @var {string} the db engine to be used
+   */
   private db;
 
   /*
@@ -21,9 +27,9 @@ export default class selector{
   /*
    * save or update the model
    *
-   * @param string query
+   * @param { string } query
    *
-   * @return Promise
+   * @return { Promise }
    * */
   public async saveOrUpdate(query) : Promise<any> {
 
@@ -38,9 +44,9 @@ export default class selector{
   /*
    * free statement to the database
    *
-   * @param string query
+   * @param { string } query
    *
-   * @return Promise
+   * @return { Promise }
    * */
   public async freeStatement(query : string) : Promise<any> {
   
@@ -56,10 +62,10 @@ export default class selector{
   /*
    * execute and generate the model/collection instance
    *
-   * @param string query
-   * @param Object model
+   * @param { string } query
+   * @param { Model/Model } model
    *
-   * @return Promise
+   * @return { Promise }
    * */
   public async statement (query: string, model : object) : Promise<any> {
 
@@ -77,9 +83,9 @@ export default class selector{
   /*
    * select the proper statement
    *
-   * @param string query
+   * @param { string } query
    *
-   * @return Promise
+   * @return { Promise }
    * */
   public async statementSelector  (query: string) : Promise<any> {
 
@@ -96,9 +102,9 @@ export default class selector{
   /*
    * query to the postres database
    *
-   * @param string queryString
+   * @param { string } queryString
    *
-   * @return Promise
+   * @return { Promise }
    * */
   private postgresQuery  (queryString : string) : Promise<any> {
 
@@ -121,9 +127,9 @@ export default class selector{
   /*
    * query to the mysql database
    *
-   * @param string queryString
+   * @param { string } queryString
    *
-   * @return Promise
+   * @return { Promise }
    * */
   private mysqlQuery  (queryString : string) : Promise<any> {
 
@@ -146,15 +152,17 @@ export default class selector{
   /*
    * generate a collection if it is needed
    *
-   * @param object data
-   * @param models/model model
+   * @param { array } data
+   * @param { models/model } model
    *
-   * @return Promise
+   * @return { Promise }
    * */
-  private generateCollectionIfNeeded(data, model : any) {
+  private generateCollectionIfNeeded(data : Array<any>, model : any) : Promise<any> | CollectionService {
 
-    if(data.length > 1)
+    if(data.length > 1){
+
       return new CollectionService(data, model);
+    }
     
     return model.create(data[0]);
   }
