@@ -503,9 +503,20 @@ export default class queryBuilder{
   public static async fetchAllrows  ( model : any) : Promise<any> {
 
     let selectorInstance = new selector();
-    let modelInstance = new model();
+    //
+    return model.select('*').get();
+    //return selectorInstance.statement(`select * from ${modelInstance.table} `, model);
+  }
+
+
+  public static async fetchAllpaginated( model : any, page : number  = 1) : Promise <any> {
+  
+    let selectorInstance = new selector();
     //console.log(model);
-    return selectorInstance.statement(`select * from ${modelInstance.table} `, model);
+    return model.select('*').paginate(page);
+    
+
+  
   }
 
   /*
