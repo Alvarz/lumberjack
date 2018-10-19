@@ -62,8 +62,8 @@ export default class Model extends queryBuilder{
       return db.Instance.update(this);
     }
     else{
-      Logger.info( 'should fill need hide fields');    
-      this.fillHiddenValuesEmptyOnNewElement();
+      //Logger.info( 'should fill need hide fields');    
+      //this.fillHiddenValuesEmptyOnNewElement();
       return db.Instance.save(this)
     }
   }

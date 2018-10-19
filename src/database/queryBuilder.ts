@@ -55,7 +55,7 @@ export default class queryBuilder{
 
 
     this.paginator = {
-      limit: 4,
+      limit: 15,
       query: '',
       total: 0,
       links: 2
