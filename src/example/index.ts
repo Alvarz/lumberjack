@@ -14,6 +14,7 @@ const save = async () =>{
     const user = User.create({
       'name': 'my name',
       'email': 'myemail@email.com',
+      'api_token': '12321312312321231',
       'lastname':'my lastname',
       'password': 'my password'
     });
