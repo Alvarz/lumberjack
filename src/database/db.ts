@@ -50,14 +50,14 @@ export default class DB{
 
     for (let key in data ){
 
-      if(key === 'id')
+      if(key === 'id' || !key || !data[key] )
         continue;
 
       toUpdate += `${key} = '${data[key]}', ` 
     }
 
     let query = `UPDATE  ${modelInstance.table} SET ${toUpdate} updated_at=CURRENT_TIMESTAMP() where id=${data.id}`
-    
+
     let err, response;
     [err, response] = await to(this.selector.saveOrUpdate(query));
 
@@ -85,8 +85,8 @@ export default class DB{
     let values = '';
 
     for (let key in data ){
-  
-      if( !key || !data)
+
+      if( !key || !data[key])
         continue;
 
       keys += `${key}, ` 
