@@ -1,5 +1,7 @@
 import  config from './config'
 import CollectionService from '../services/CollectionService'
+import to from '../services/to'
+
 
 export default class selector{
   
@@ -33,12 +35,7 @@ export default class selector{
    * */
   public async saveOrUpdate(query) : Promise<any> {
 
-    return new Promise(async(resolve, reject) =>{
-    
-      let response = await this.mysqlQuery(query);
-      
-      resolve(response)
-    });
+    return this.mysqlQuery(query);
   }
 
   /*
@@ -50,13 +47,7 @@ export default class selector{
    * */
   public async freeStatement(query : string) : Promise<any> {
   
-    let self = this;
-    return new Promise(async(resolve, reject) => {
-
-      let data = await self.statementSelector(query);
-      resolve(data);
-    });
-  
+    return this.statementSelector(query);
   }
 
   /*
@@ -71,8 +62,13 @@ export default class selector{
 
     let self = this;
     return new Promise(async(resolve, reject) => {
+  
+      let err, data;
+      [err, data] = await to(self.statementSelector(query));
 
-      let data = await self.statementSelector(query);
+      if(err || !data)
+        reject (err);
+
       let collection = self.generateCollectionIfNeeded(data, model);
 
       resolve(collection);
@@ -136,16 +132,22 @@ export default class selector{
     let self = this;
 
     return new Promise(function(resolve, reject){
-    
-      self.db.query(queryString, function(err, rows, fields){
 
-        if(err){
-        
-          console.error("db.ts -> mysqlQuery: ", err);
-          reject(err);
-        }
-        resolve(rows);
-      });
+      try{
+      
+          self.db.query(queryString, function(err, rows, fields){
+
+            if(err){
+              console.error("db.ts -> mysqlQuery: ", err);
+              reject(err);
+            }
+            resolve(rows);
+          });
+      }
+      catch(err){
+        reject(err);
+      }
+    
     });
   }
 

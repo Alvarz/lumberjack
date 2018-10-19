@@ -3,9 +3,9 @@
 
 
 "@beardedframework/logger@latest":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@beardedframework/logger/-/logger-0.0.11.tgz#ff824a5b427c0c28b5b0e8a59394c9d5ec9b6a58"
-  integrity sha512-UxB7Pw4DFB5bG4SLTsZgg81mf+po8OvpOXfHMEOo8tn9KIk8jbsJxzdaSTnZc+ZZ56n588uxuBWAtdKANP9qQA==
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@beardedframework/logger/-/logger-0.0.13.tgz#b402791d3b044a2af28151b696ea0ffdf8d1af36"
+  integrity sha512-fMDEizLDfHfTQ4c1qbDJoz4LanNg0/VgAuByZtrfG7fJUlF7z5OuG06tDuWDIeDIYHggT0PSCE55xEWDI+2k0A==
   dependencies:
     "@types/node" "7.0.22"
     nodemon "1.11.0"

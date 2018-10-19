@@ -2,6 +2,7 @@ import  { config } from 'dotenv'
 import User from './models/User'
 import Model from './models/Model'
 import DB from './database/db'
+import to from './services/to'
 
 config();
 
@@ -11,5 +12,6 @@ config();
  */
 export {
   Model,
-  DB
+  DB,
+  to
 }
