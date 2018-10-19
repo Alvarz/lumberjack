@@ -257,11 +257,25 @@ export default class Model extends queryBuilder{
    * @return { promise }
    *
    * */
+  public static async fetchPaginated (page : number = 1 ) : Promise<any>{
+
+    return Model.fetchAllpaginated(this, page);
+    //return db.Instance.fetchAll (this);
+  }
+  /*
+   * fetch the collection of models
+   *
+   *
+   * @return { promise }
+   *
+   * */
   public static async fetchAll () : Promise<any>{
 
     return Model.fetchAllrows(this);
     //return db.Instance.fetchAll (this);
   }
+
+
 
   /*
    * start a queryBuilder instance with select
