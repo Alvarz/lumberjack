@@ -8,7 +8,7 @@ export default class selector{
   /*
    * @var {string} the db engine to be used
    */
-  private dbEngine : string;
+  private _dbEngine : string;
 
   /*
    * @var {string} the db engine to be used
@@ -16,15 +16,111 @@ export default class selector{
   private db;
 
   /*
+   * @var { array }
+   */
+  private noUpdateAblesWithData : Array<any> = ['id', 'created_at', 'updated_at'];
+  /*
    * class constructor
    *
    * */
   constructor(){
 
+    this._dbEngine = process.env.DB_CONNECTION;
     this.db = config.Instance.db;
-    this.dbEngine = process.env.DB_CONNECTION;
+  }
+  
+  /*
+   * db getter
+   **/
+  public get dbEngine(){
+
+    return  this._dbEngine;
   }
 
+  /*
+   * db setter
+   **/
+  public set dbEngine(value){
+
+    this._dbEngine = value;
+  }
+
+  /*
+   * create a new entry of model on database
+   *
+   * @param { mode/Model } modelInstance
+   *
+   * @return { Promise }
+   * */
+  public async save(modelInstance) : Promise<any> {
+
+    let data = modelInstance.data
+
+    let keys = '';
+    let values = '';
+
+    for (let key in data ){
+
+      if( !key || !data[key])
+        continue;
+
+      keys += `${key}, ` 
+      values += `'${data[key]}', ` 
+    }
+
+    let timestamp;
+    if(this.dbEngine == 'mysql')
+      timestamp = 'CURRENT_TIMESTAMP()';
+     else
+      timestamp = 'CURRENT_TIMESTAMP';
+  
+    const query = `INSERT INTO  ${modelInstance.table} (${keys} created_at, updated_at) VALUES (${values} ${timestamp}, ${timestamp})`
+
+    //return this.selector.statement('select count(id) from users');
+    return this.saveOrUpdate(query);
+  }
+
+  /*
+   * update the model data
+   *
+   * @param { mode/Model } modelInstance
+   *
+   * @return { Promise }
+   *
+   * */
+  public async update(modelInstance) : Promise<any> {
+
+    const data = modelInstance.data;
+    let toUpdate = '';
+
+    for (let key in data ){
+
+      if(!key || !data[key] || this.noUpdateAblesWithData.includes(key)  )
+        continue;
+
+      toUpdate += `${key} = '${data[key]}', ` 
+    }
+
+    let timestamp;
+    if(this.dbEngine == 'mysql')
+      timestamp = 'CURRENT_TIMESTAMP()';
+     else
+      timestamp = 'CURRENT_TIMESTAMP';
+
+    let query = `UPDATE  ${modelInstance.table} SET ${toUpdate} updated_at=${timestamp} where id='${data.id}'`
+
+    console.log(query);
+    let err, response;
+    [err, response] = await to(this.saveOrUpdate(query));
+
+    if(!response || err)
+      return err;
+
+    if(response.changedRows < 1)
+      return 'error'
+    
+    return modelInstance
+  }
 
   /*
    * save or update the model
@@ -34,8 +130,20 @@ export default class selector{
    * @return { Promise }
    * */
   public async saveOrUpdate(query) : Promise<any> {
+    
+    let resp;
+    switch(this.dbEngine){
+      case 'mysql':
+         resp = this.mysqlQuery(query);
+        break;
+      case 'postgres':
+        resp = this.postgresQuery(query);
+        break;
+      default:
+        resp = this.mysqlQuery(query);
+    }
 
-    return this.mysqlQuery(query);
+    return resp;
   }
 
   /*
@@ -84,12 +192,12 @@ export default class selector{
    * @return { Promise }
    * */
   public async statementSelector  (query: string) : Promise<any> {
-
+  
     switch(this.dbEngine){
       case 'mysql':
         return this.mysqlQuery(query);
       case 'postgres':
-        return this.mysqlQuery(query);
+        return this.postgresQuery(query);
       default:
         return this.mysqlQuery(query);
     }
@@ -105,18 +213,31 @@ export default class selector{
   private postgresQuery  (queryString : string) : Promise<any> {
 
     const self = this;
-
-    return new Promise(function(resolve, reject){
   
-      self.db.any(queryString).then(function(data){
+    return new Promise(function(resolve, reject){
 
-        resolve(data);
+      try{
       
-      }).catch(function(err){
+        self.db.query(queryString, (err, res) => {
+  
+          if(err){
+            console.error("selector.ts -> postgresQuery: ", err);
+            reject(err);
+            return;
+          }
+  
+          if(res.hasOwnProperty('rows'))
+            resolve(res.rows)
+          else
+            resolve(res);
 
-        console.error("db.ts -> posrgresQuery: ", err);
+          //self.db.end()
+        });
+      }
+      catch(err){
         reject(err);
-      });
+      }
+
     });
   }
 
@@ -138,7 +259,7 @@ export default class selector{
           self.db.query(queryString, function(err, rows, fields){
 
             if(err){
-              console.error("db.ts -> mysqlQuery: ", err);
+              console.error("selector.ts -> mysqlQuery: ", err);
               reject(err);
             }
             resolve(rows);
@@ -160,6 +281,9 @@ export default class selector{
    * @return { Promise }
    * */
   private generateCollectionIfNeeded(data : Array<any>, model : any) : Promise<any> | CollectionService {
+
+    if(!data)
+      return;
 
     if(data.length > 1){
 

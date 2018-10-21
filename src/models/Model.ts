@@ -47,7 +47,7 @@ export default class Model extends queryBuilder{
 
     super();
     this.data = data;
-    this.columns()
+    //this.columns()
   }
 
   /*

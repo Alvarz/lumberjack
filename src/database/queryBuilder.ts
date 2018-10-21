@@ -360,7 +360,9 @@ export default class queryBuilder{
         self.paginator.total = 1;
    
       let offset = (self.paginator.page - 1) * self.paginator.limit;
-      self.query.limit = ` LIMIT ${offset}, ${self.paginator.limit}`
+      
+      if(self.selector.dbEngine == 'mysql' || self.selector.dbEngine == 'postgres' )
+        self.query.limit = ` LIMIT ${self.paginator.limit} OFFSET ${offset} `
       
       self.paginator.query = self.buildQryString();
 
@@ -532,7 +534,7 @@ export default class queryBuilder{
 
      let selectorInstance = new selector();
      let modelInstance = new model();
-     let fields = modelInstance.fillable.toString();
+    let fields = modelInstance.fillable.toString();
     return selectorInstance.statement(`select * from ${modelInstance.table} where id=${id}`, model);
   }
 }

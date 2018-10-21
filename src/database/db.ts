@@ -45,29 +45,7 @@ export default class DB{
    * */
   public async update(modelInstance) : Promise<any> {
 
-    const data = modelInstance.data;
-    let toUpdate = '';
-
-    for (let key in data ){
-
-      if(key === 'id' || !key || !data[key] )
-        continue;
-
-      toUpdate += `${key} = '${data[key]}', ` 
-    }
-
-    let query = `UPDATE  ${modelInstance.table} SET ${toUpdate} updated_at=CURRENT_TIMESTAMP() where id=${data.id}`
-
-    let err, response;
-    [err, response] = await to(this.selector.saveOrUpdate(query));
-
-    if(!response || err)
-      return err;
-
-    if(response.changedRows < 1)
-      return 'error'
-    
-    return modelInstance
+    return this.selector.update(modelInstance);
   }
 
   /*
@@ -79,25 +57,7 @@ export default class DB{
    * */
   public async save(modelInstance) : Promise<any> {
 
-    let data = modelInstance.data
-
-    let keys = '';
-    let values = '';
-
-    for (let key in data ){
-
-      if( !key || !data[key])
-        continue;
-
-      keys += `${key}, ` 
-      values += `'${data[key]}', ` 
-    }
-  
-    const query = `INSERT INTO  ${modelInstance.table} (${keys} created_at, updated_at) VALUES (${values} CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())`
-
-    console.log(query);
-    //return this.selector.statement('select count(id) from users');
-    return this.selector.saveOrUpdate(query);
+    return this.selector.save(modelInstance);
   }
 
   /*
@@ -115,7 +75,8 @@ export default class DB{
       let fields = []
       
       let err, response;
-      [err, response] = await to(this.selector.freeStatement(`describe users`));
+      [err, response] = await to(this.selector.freeStatement(`describe ${modelInstance.table}`));
+      //[err, response] = await to(this.selector.freeStatement(`\d+ ${modelInstance.table}`));
 
       if(err && !response)
         reject(err);
