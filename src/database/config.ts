@@ -1,5 +1,6 @@
 //import * as postgres from 'pg-promise'
 import * as mysql from 'mysql'
+import { Client } from 'pg'
 
 
 export default class config{
@@ -49,6 +50,7 @@ export default class config{
    * @var { string } db database port
    * */
   private configuration ;
+
 
   /*
    * get the database instance
@@ -130,10 +132,16 @@ export default class config{
    * */
   private postgresInstance() : any {
 
-    //let instance = postgres(`postgres://${this.username}:${this.password}@host:${this.port}/${this.database}`);
-    let instance = [];
+    let client = new Client({
+      user: this.username,
+      database: this.database,
+      password: this.password
+    });
 
-    return instance;
+    client.connect();
+
+    return client;
+
   }
 
 }
