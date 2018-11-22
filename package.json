@@ -1,6 +1,6 @@
 {
   "name": "@beardedframework/lumberjack",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "a ORM for bearded",
   "main": "dist/index.js",
   "scripts": {
