@@ -2,7 +2,9 @@
 import * as mysql from 'mysql'
 import { Client } from 'pg'
 
-
+/*
+ * @class config
+ */
 export default class config{
 
   /* ####### Singleton ########## */
@@ -10,9 +12,8 @@ export default class config{
   private static _instance;
 
   /*
-   *
+   * the instance used on singleton
    * @return { config }
-   *
    * */
   public static get Instance() : config {
 
@@ -54,7 +55,6 @@ export default class config{
 
   /*
    * get the database instance
-   *
    * @return { object }
    * */
   get db() :object {
@@ -63,20 +63,15 @@ export default class config{
 
   /*
    * set the database instance
-   *
    * @set { object }
-   *
    * @return { void }
    * */
   set db(theDB:object) {
     this._db = theDB;
   }
   /*
-   *
    * used to mount the routes
-   *
    * @return { void }
-   *
    * */
   constructor(){
 
@@ -91,9 +86,7 @@ export default class config{
   /*
    *
    * select the database instance
-   *
    * @param { string } selected
-   *
    * @return { databaseInstance }
    * */
   private selectDatabase (selected : string) : any{
@@ -109,9 +102,7 @@ export default class config{
   }
 
   /*
-   *
    * create mysql database instance
-   *
    * @return { databaseInstance }
    * */
   private mysqlInstance() : any {
@@ -125,9 +116,7 @@ export default class config{
   }
 
   /*
-   *
    * create postgresql database instance
-   *
    * @return { databaseInstance }
    * */
   private postgresInstance() : any {
@@ -139,9 +128,6 @@ export default class config{
     });
 
     client.connect();
-
     return client;
-
   }
-
 }

@@ -3,6 +3,7 @@ import User from '../models/User'
 import Model from '../models/Model'
 import DB from '../database/db'
 import to from '../services/to'
+import Logger from '@beardedframework/logger'
 
 config();
 
@@ -31,15 +32,15 @@ const save = async () =>{
 
   [err, userCreated] = await to(user.save());
   if(err || !userCreated){
-    console.log(err);
+    Logger.error(err);
   }
   else
-    console.log(userCreated);
+    Logger.info(userCreated);
 }
 const met = async () => {
 
   
-  console.log('met');
+  Logger.info('met');
   //let user = await User.find(1);
   //let users = await User.fetchAll();
 
@@ -56,9 +57,9 @@ const met = async () => {
     [err, us] = await to(User.fetchPaginated(1));
 
   if(err)
-    console.log(err)
+    Logger.error(err)
   //console.log(userResponse.toArray());
-  console.log(us);
+  Logger.info(us);
    
   //console.log(userResponse.toArray());
 };

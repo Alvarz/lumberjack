@@ -2,34 +2,32 @@
 import  selector  from './selector'
 import Logger from '@beardedframework/logger'
 
+/*
+ * @class queryBuilder
+ */
 export default class queryBuilder{
 
   /*
-   *
    * @var { object } the query object
    * */
   private query : any;
   
   /*
-   *
    * @var { object }the selector instance
    * */
   private paginator : any;
   /*
-   *
    * @var { selector }the selector instance
    * */
   private selector : selector;
 
   /*
-   *
    * @var { object }query cases when
    * */
   private queryCaseWhens : any;
+  
   /*
-   *
    * class construtor
-   *
    * */
   constructor(tableName = null){
 
@@ -53,7 +51,6 @@ export default class queryBuilder{
 
     this.queryCaseWhens = '';
 
-
     this.paginator = {
       limit: 15,
       query: '',
@@ -69,11 +66,8 @@ export default class queryBuilder{
 
   /*
    * start a new queryBuilder selecting
-   *
    * @param { Array } args
-   *
    * @return { queryBuilder }  instance
-   *
    * */
   public select(...args) : queryBuilder {
 
@@ -86,15 +80,12 @@ export default class queryBuilder{
     return this;
   }
 
-
   /*
    * add where to builder
-   *
    * @param { String } field
    * @param { String }  operator
    * @param { any } value
    * @param { model } model
-   *
    * @return { queryBuilder } instance
    * */
   public where(field : string, operator : string, value : any, model = null) : queryBuilder {
@@ -104,10 +95,8 @@ export default class queryBuilder{
 
   /*
    * add where IN to builder
-   *
    * @param { String } field
    * @param { Array } values
-   *
    * @return { queryBuilder } instance
    * */
   public whereIn(field : string, values : Array<any>) : queryBuilder {
@@ -119,11 +108,9 @@ export default class queryBuilder{
 
   /*
    * add between to builder
-   *
    * @param { String } field
    * @param { String } firstValue
    * @param { String } secondValue
-   *
    * @return { queryBuilder } instance
    * */
   public whereBetween(field : string, firstValue : string, secondValue : string) : queryBuilder {
@@ -135,11 +122,9 @@ export default class queryBuilder{
 
   /*
    * add orWhere to builder
-   *
    * @param { String } field
    * @param { String } operator
    * @param { any } value
-   *
    * @return { queryBuilder } instance
    * */
   public orWhere(field : string, operator : string, value : any) : queryBuilder {
@@ -149,10 +134,8 @@ export default class queryBuilder{
 
   /*
    * generate case selects
-   *
    * @param { String } indentifier
    * @param { Function } func
-   *
    * @return { queryBuilder } instance
    * */
   public caseSelect(identifier : string,  callable : Function) : queryBuilder {
@@ -168,12 +151,10 @@ export default class queryBuilder{
 
   /*
    * query if to the builder
-   *
    * @param { String } identifier
    * @param { String } condition
    * @param { String } valueIfTrue
    * @param { String } valueIfFalse
-   *
    * @return { queryBuilder } instance
    * */
   public ifSelect(identifier : string, condition : string, valueIfTrue : string, valueIfFalse : string ) : queryBuilder {
@@ -187,12 +168,10 @@ export default class queryBuilder{
 
   /*
    * add when to case select builder
-   *
    * @param { String } firstArgument
    * @param { String } operator
    * @param { String } secondArgument
    * @param { String } then
-   *
    * @return { queryBuilder } instance
    * */
   public when(firstArgument : string, operator : any, secondArgument : string, then : string) : queryBuilder {
@@ -204,12 +183,10 @@ export default class queryBuilder{
 
   /*
    * add join to builder
-   *
    * @param { String } secondTable
    * @param { String } firstTableColumnName
    * @param { String } operator
    * @param { any } secondTableColumnName
-   *
    * @return { queryBuilder } instance
    * */
   public join(secondTable : string, firstTableColumnName : any, operator : string,  secondTableColumnName : any ) : queryBuilder {
@@ -220,12 +197,10 @@ export default class queryBuilder{
 
   /*
    * add outerJoin to builder
-   *
    * @param { String } secondTable
    * @param { String } firstTableColumnName
    * @param { String } operator
    * @param { any } secondTableColumnName
-   *
    * @return { queryBuilder } instance
    * */
   public outerJoin(secondTable : string, firstTableColumnName : any, operator : string,  secondTableColumnName : any) : queryBuilder {
@@ -235,12 +210,10 @@ export default class queryBuilder{
   }
   /*
    * add rightJoin to builder
-   *
    * @param { String } secondTable
    * @param { String } firstTableColumnName
    * @param { String } operator
    * @param { any } secondTableColumnName
-   *
    * @return { queryBuilder } instance
    * */
   public rightJoin(secondTable : string, firstTableColumnName : any, operator : string,  secondTableColumnName : any) : queryBuilder {
@@ -250,12 +223,10 @@ export default class queryBuilder{
   }
   /*
    * add leftJoin to builder
-   *
    * @param { String } secondTable
    * @param { String } firstTableColumnName
    * @param { String } operator
    * @param { any } secondTableColumnName
-   *
    * @return { queryBuilder } instance
    * */
   public leftJoin(secondTable : string, firstTableColumnName : any, operator : string,  secondTableColumnName : any) : queryBuilder {
@@ -267,9 +238,7 @@ export default class queryBuilder{
 
   /*
    * add order by to builder
-   *
    * @param { String } order
-   *
    * @return { queryBuilder } instance
    * */
   public orderBy(order : string) : queryBuilder {
@@ -281,9 +250,7 @@ export default class queryBuilder{
 
   /*
    * add group by to builder
-   *
    * @param { String } field
-   *
    * @return { queryBuilder } instance
    * */
   public groupBy(field : string) : queryBuilder {
@@ -295,7 +262,6 @@ export default class queryBuilder{
 
   /*
    * return the query 
-   *
    * @return { collection }
    * */
   public get() : any {
@@ -306,7 +272,6 @@ export default class queryBuilder{
 
   /*
    * return the first element of query
-   *
    * @return { model }
    * */
   public first() : any {
@@ -318,9 +283,7 @@ export default class queryBuilder{
 
   /*
    * add limit to the query
-   *
    * @param { number } size
-   *
    * @return { queryBuilder } instance
    * */
   public limit(size : number) : queryBuilder {
@@ -331,7 +294,6 @@ export default class queryBuilder{
 
   /*
    * build the query string
-   *
    * @return { Promise }
    * */
   public async paginate(page : number, limit : number = null, links : number = null) : Promise<any> {
@@ -381,7 +343,6 @@ export default class queryBuilder{
 
   /*
    * build the query string
-   *
    * @return { String }
    * */
   private buildQryString() : string {
@@ -400,9 +361,7 @@ export default class queryBuilder{
   /*
    *
    * set the model to the builder
-   *
    * @param { model/model } model
-   *
    * @return { void }
    * */
   public setModel(model) : void {
@@ -413,10 +372,7 @@ export default class queryBuilder{
   }
 
   /*
-   *
    * generate the links of the paginator
-   *
-   *
    * @return { Object }
    * */
   private linkGenerator() : object {
@@ -473,12 +429,10 @@ export default class queryBuilder{
 
   /*
    * add where to builder
-   *
    * @param { String } field
    * @param { String } operator
    * @param { any } value
    * @param { string } concater
-   *
    * @return { queryBuilder } instance
    * */
   private whereCompleter(field : string, operator : string, value : string, concater = 'AND') : queryBuilder {
@@ -493,13 +447,9 @@ export default class queryBuilder{
     return this;
   }
 
-
-
   /*
    * add where to builder
-   *
    * @param { models/model } model
-   *
    * @return { Promise }
    * */
   public static async fetchAllrows  ( model : any) : Promise<any> {
@@ -516,24 +466,18 @@ export default class queryBuilder{
     //let selectorInstance = new selector();
     //console.log(model);
     return model.select('*').paginate(page);
-    
-
-  
   }
 
   /*
    * find row by id
-   *
    * @param { number } id 
    * @param { models/model } model
-   *
    * @return { Promise }
-   *
    * */
   public static async findRow (id : number, model : any) : Promise<any> {
 
-     let selectorInstance = new selector();
-     let modelInstance = new model();
+    let selectorInstance = new selector();
+    let modelInstance = new model();
     let fields = modelInstance.fillable.toString();
     return selectorInstance.statement(`select * from ${modelInstance.table} where id=${id}`, model);
   }

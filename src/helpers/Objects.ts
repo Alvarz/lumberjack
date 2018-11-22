@@ -1,9 +1,10 @@
-
+/*
+ * @class Objects
+ * */
 export default class Objects{
   
   /*
    * map the object to array
-   *
    * return { array }
    * */
   public static mapToArray(objectToMap : object, mapFn : Function) : Array<any> {
@@ -13,14 +14,11 @@ export default class Objects{
 
       newArr[key] = mapFn(objectToMap[key], key)
     }
-
     return newArr;
   }
 
-
   /*
    * map the object to object
-   *
    * return { object }
    * */
   public static map(objectToMap : object, mapFn : Function) : object {
@@ -35,18 +33,14 @@ export default class Objects{
         newObject = Object.assign(newObject,  el )
       }
     }
-
     return newObject;
   }
 
   /*
    * return if element is in array
-   *
    * @param { Array } arr
    * @param { String } key
-   *
-   * retun { boolean }
-   *
+   * @return { boolean }
    * */
   public static inArray(arr : Array<any>, key : string) : boolean{
 

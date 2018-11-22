@@ -1,5 +1,8 @@
 import * as _ from 'lodash';
 
+/*
+ * @class CollectionService
+ * */
 export default class CollectionService{
 
   private elements : Array<any>
@@ -26,9 +29,7 @@ export default class CollectionService{
 
   /*
    * convert the collection to array
-   *
    * @return { Array }
-   *
    * */
   public toJson  () : Array<any>{
 
@@ -37,19 +38,15 @@ export default class CollectionService{
   }
   /*
    * convert the collection to array
-   *
    * @return { Array }
-   *
    * */
   public toArray  () : Array<any>{
 
     return this.toArrayOrJson(true);
   }
   /*
-   *  chunk the array on given size (generate new array)
-   *
+   * chunk the array on given size (generate new array)
    * @param { number } size
-   *
    * @return { Array }
    */
   public chunk(size : number) : Array<any>{
@@ -58,10 +55,8 @@ export default class CollectionService{
   }
 
   /*
-   *  contact the array (generate new array)
-   *
+   * contact the array (generate new array)
    * @param { array } args
-   *
    * @return { Array }
    */
   public concat(...args) : Array<any> {
@@ -70,10 +65,8 @@ export default class CollectionService{
   }
 
   /*
-   *  remove from start of the array at given number (generate new array)
-   *
+   * remove from start of the array at given number (generate new array)
    * @param { number } size
-   *
    * @return { array }
    */
   public drop(size : number = 1) : Array<any>{
@@ -82,10 +75,8 @@ export default class CollectionService{
   }
 
   /*
-   *  remove from end of the array at given number (generate new array)
-   *
+   * remove from end of the array at given number (generate new array)
    * @param { number } size
-   *
    * @return { array }
    */
   public dropFromLast(size : number = 1) : Array<any>{
@@ -95,9 +86,7 @@ export default class CollectionService{
 
   /*
    * fill de array with given values (generate new array)
-   *
    * @param { array } args
-   *
    * @return { Array }
    */
   public fill(...args) : Array<any> {
@@ -108,9 +97,7 @@ export default class CollectionService{
 
   /*
    * return the index ig element defined nby function handler (generate new array)
-   *
    * @param { Function } func
-   *
    * @return { number }
    */
   public findIndex(func : Function) : number{
@@ -121,9 +108,7 @@ export default class CollectionService{
   
   /*
    * return the index ig element defined nby function handler (generate new array)
-   *
    * @param { Function } func
-   *
    * @return { number }
    */
   public findLastIndex(func : Function) : number{
@@ -133,9 +118,7 @@ export default class CollectionService{
 
   /*
    * return the index of element staring from first element (generate new array)
-   *
    * @param { any } element
-   *
    * @return { number }
    */
   public indexOf(element : any) : number{
@@ -143,12 +126,9 @@ export default class CollectionService{
     return _.indexOf(this.toArray(), element);
   }
 
-
   /*
    * return the index of element staring from last element (generate new array)
-   *
    * @param { any } element
-   *
    * @return { number }
    */
   public lastIndexOf(element : any) : number{
@@ -158,21 +138,16 @@ export default class CollectionService{
 
   /*
    * return the intersecting values (generate new array)
-   *
    * @param { array } otherArray
-   *
    * @return { array }
    */
   public intersection(otherArray : Array<any>) : Array<any> {
 
     return _.intersection(this.toArray(), otherArray);
-  
   }
-
 
   /*
    * return the index ig element defined nby function handler (generate new array)
-   *
    * @return { array }
    */
   public flatten() : Array<any> {
@@ -182,7 +157,6 @@ export default class CollectionService{
 
   /*
    * return the first element of collection
-   *
    * @return { array }
    */
   public first() : any{
@@ -192,7 +166,6 @@ export default class CollectionService{
 
   /*
    * return the last element of collection
-   *
    * @return { array }
    */
   public last() : any{
@@ -202,9 +175,7 @@ export default class CollectionService{
 
   /*
    * Gets the element at index n of array
-   *
    * @param { number } index
-   *
    * @return { any }
    */
   public getByIndex(index : number) : any{
@@ -214,9 +185,7 @@ export default class CollectionService{
 
   /*
    * remove all elements from array
-   *
    * @param { array } values
-   *
    * @return { array }
    */
   public pull(values : Array<any>) : Array<any> {
@@ -224,23 +193,18 @@ export default class CollectionService{
     return _.pullAll(this.toArray(), values);
   }
 
-
   /*
    * remove all elementos from array by index
-   *
    * @param { array } values
-   *
    * @return { array }
    */
   public pullAt(values : Array<number>) : Array<any> {
 
     return _.pullAt(this.toArray(), values);
   }
-
   
   /*
    * Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on
-   * 
    * @return { array }
    */
   public reverse() : Array<any> {
@@ -250,9 +214,7 @@ export default class CollectionService{
 
   /*
    * Creates a slice of array with n elements taken from the beginning.
-   * 
    * @param { number } size
-   *
    * @return { array }
    */
   public take(size : number) : Array<any> {
@@ -260,13 +222,9 @@ export default class CollectionService{
     return _.take(this.toArray(), size);
   }
 
-
-
   /*
    * Creates a slice of array with n elements taken from the beginning.
-   * 
    * @param { number } size
-   *
    * @return { array }
    */
   public takeFromLast(size : number) : Array<any> {
@@ -279,9 +237,7 @@ export default class CollectionService{
    * Creates a slice of array with elements taken from the beginning. 
    * Elements are taken until predicate returns falsey. The predicate is
    * invoked with three arguments: (value, index, array).
-   * 
    * @param { Function } func
-   *
    * @return { array }
    */
   public takeWhile(func : Function) : Array<any> {
@@ -292,9 +248,7 @@ export default class CollectionService{
 
   /*
    * Creates an array of unique values, in order, from all given arrays
-   *
    * @param { array } args
-   *
    * @return { array }
    */
   public union(...args) : Array<any> {
@@ -304,7 +258,6 @@ export default class CollectionService{
 
   /*
    * Creates a duplicate-free version of an array
-   *
    * @return { array }
    */
   public unique() : Array<any> {
@@ -314,9 +267,7 @@ export default class CollectionService{
 
   /*
    * Creates an object composed of keys generated from the results of running each element of collection thru iteratee
-   *
    * @param { Function } func
-   *
    * @return { boolean }
    * */
   public countBy(func : Function) : boolean {
@@ -325,22 +276,17 @@ export default class CollectionService{
   }
   /*
    * Checks if predicate returns truthy for all elements of collection. Iteration is stopped once predicate returns falsey.
-   *
    * @param { Function } func
-   *
    * @return { boolean }
    * */
   public every(func : Function) : boolean {
 
     return _.every(this.toJson(), func)
   }
-
   
   /*
    * Iterates over elements of collection, returning an array of all elements predicate returns truthy for..
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public filter(func : Function) : Array<any> {
@@ -350,9 +296,7 @@ export default class CollectionService{
 
   /*
    * The opposite of _.filter; this method returns the elements of collection that predicate does not return truthy for.
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public reject(func : Function) : Array<any> {
@@ -362,7 +306,6 @@ export default class CollectionService{
 
   /*
    * Gets a random element from collection.
-   *
    * @return { array }
    * */
   public sample() : any {
@@ -372,9 +315,7 @@ export default class CollectionService{
 
   /*
    * Gets n random elements at unique keys from collection up to the size of collection.
-   *
    * @param { number } size
-   *
    * @return { array }
    * */
   public sampleSize( size : number) : Array<any> {
@@ -384,7 +325,6 @@ export default class CollectionService{
 
   /*
    * Gets n random elements at unique keys from collection up to the size of collection.
-   *
    * @return { array }
    * */
   public shuffle() : Array<any> {
@@ -395,7 +335,6 @@ export default class CollectionService{
   /*
    * Gets the size of collection by returning its length for array-like
    * values or the number of own enumerable string keyed properties for objects.
-   *
    * @return { number }
    * */
   public size() : number {
@@ -409,9 +348,7 @@ export default class CollectionService{
    * running each element in a collection thru each iteratee. this method performs
    * a stable sort, that is, it preserves the original sort order of equal elements.
    * the iteratees are invoked with one argument: (value).
-   *
    * @param { function } func
-   *
    * @return { number }
    * */
   public sortBy(func : Function) : Array<any> {
@@ -424,9 +361,7 @@ export default class CollectionService{
    * running each element in a collection thru each iteratee. this method performs
    * a stable sort, that is, it preserves the original sort order of equal elements.
    * the iteratees are invoked with one argument: (value).
-   *
    * @param { model/model } element
-   *
    * @return { boolean }
    * */
   public has(element : any) : boolean {
@@ -437,9 +372,7 @@ export default class CollectionService{
   /*
    * Iterates over elements of collection and invokes iteratee for each element. 
    * The iteratee is invoked with three arguments: (value, index|key, collection)
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public forEach(func : Function) : Array<any> {
@@ -450,9 +383,7 @@ export default class CollectionService{
   /*
    * Creates an array of values by running each element in collection thru iteratee. 
    * The iteratee is invoked with three arguments:(value, index|key, collection).
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public map(func : Function) : Array<any> {
@@ -465,9 +396,7 @@ export default class CollectionService{
    * running each element of collection thru iteratee. The order of 
    * grouped values is determined by the order they occur in collection. 
    * The corresponding value of each key is an array of elements responsible for generating the key.
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public groupBy(func : Function) : Array<any> {
@@ -481,9 +410,7 @@ export default class CollectionService{
    * sort orders of the iteratees to sort by. If orders is unspecified,
    * all values are sorted in ascending order. Otherwise, specify an order of
    * "desc" for descending or "asc" for ascending sort order of corresponding values.
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public orderBy(func : Function) : Array<any> {
@@ -497,9 +424,7 @@ export default class CollectionService{
    * value of the previous. If accumulator is not given, the first element of collection
    * is used as the initial value. The iteratee is invoked with four arguments:
    * (accumulator, value, index|key, collection).
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public reduce(func : Function) : Array<any> {
@@ -511,9 +436,7 @@ export default class CollectionService{
    * Creates an array of elements split into two groups, the first of which contains
    * elements predicate returns truthy for, the second of which contains elements predicate 
    * returns falsey for. The predicate is invoked with one argument: (value).
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public partition(func : Function) : Array<any> {
@@ -523,9 +446,7 @@ export default class CollectionService{
 
   /*
    * Checks if value is in collection. If collection is a string, it's checked for a substring of value
-   *
    * @param { any } element
-   *
    * @return { boolean }
    * */
   public includes(element : any) : boolean {
@@ -535,9 +456,7 @@ export default class CollectionService{
 
   /*
    * Iterates over elements of collection, returning the first element predicate returns truthy for
-   *
    * @param { Function } func
-   *
    * @return { models/model }
    * */
   public find(func : Function) : any {
@@ -547,9 +466,7 @@ export default class CollectionService{
 
   /*
    * This method is like _.find except that it iterates over elements of collection from right to left.
-   *
    * @param { Function } func
-   *
    * @return { models/model }
    * */
   public findLast(func : Function) : any {
@@ -560,9 +477,7 @@ export default class CollectionService{
 
   /*
    * This method is like _.find except that it iterates over elements of collection from right to left.
-   *
    * @param { Function } func
-   *
    * @return { array }
    * */
   public flatMap(func : Function) : Array<any> {
@@ -570,12 +485,8 @@ export default class CollectionService{
     return _.flatMapDeep(this.toJson(), func)
   }
   /*
-   *
    * convert the collection to array
-   *
-   *
-   * @return Array
-   *
+   * @return { Array }
    * */
   private toArrayOrJson(isArray  : boolean = false ) : Array<any>{
   
@@ -590,5 +501,4 @@ export default class CollectionService{
     //return the collection to array
     return elements;
   }
-
 }

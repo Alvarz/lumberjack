@@ -1,7 +1,9 @@
 import  selector  from './selector'
 import to from '../services/to'
 
-
+/*
+ * @class DB
+ */
 export default class DB{
 
 
@@ -37,11 +39,8 @@ export default class DB{
 
   /*
    * update the model data
-   *
    * @param { mode/Model } modelInstance
-   *
    * @return { Promise }
-   *
    * */
   public async update(modelInstance) : Promise<any> {
 
@@ -50,9 +49,7 @@ export default class DB{
 
   /*
    * create a new entry of model on database
-   *
    * @param { mode/Model } modelInstance
-   *
    * @return { Promise }
    * */
   public async save(modelInstance) : Promise<any> {
@@ -62,9 +59,7 @@ export default class DB{
 
   /*
    * return the column names of the given table model
-   *
    * @param { mode/Model } modelInstance
-   *
    * @return { Promise }
    *
    * */
