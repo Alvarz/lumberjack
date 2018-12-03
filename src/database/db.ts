@@ -61,7 +61,6 @@ export default class DB{
    * return the column names of the given table model
    * @param { mode/Model } modelInstance
    * @return { Promise }
-   *
    * */
   public async columns(modelInstance : any) : Promise<any> {
 
@@ -82,5 +81,15 @@ export default class DB{
       }
       resolve(fields)
     });
+  }
+
+  /*
+   * pass query directly to the database instance
+   * @param { string } query
+   * @return { Promise }
+   * */
+  public async statement(query : string) : Promise<any> {
+
+    return this.selector.freeStatement(query);
   }
 }

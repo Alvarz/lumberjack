@@ -255,6 +255,7 @@ export default class selector{
     return new Promise(function(resolve, reject){
 
       try{
+
       
           self.db.query(queryString, function(err, rows, fields){
 
